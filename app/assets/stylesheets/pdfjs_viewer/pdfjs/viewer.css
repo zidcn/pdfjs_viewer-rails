@@ -212,6 +212,7 @@
 .annotationLayer .underlineAnnotation,
 .annotationLayer .squigglyAnnotation,
 .annotationLayer .strikeoutAnnotation,
+.annotationLayer .lineAnnotation svg line,
 .annotationLayer .fileAttachmentAnnotation {
   cursor: pointer;
 }
@@ -250,6 +251,10 @@
 .pdfViewer .page canvas {
   margin: 0;
   display: block;
+}
+
+.pdfViewer .page canvas[hidden] {
+  display: none;
 }
 
 .pdfViewer .page .loadingIcon {
@@ -517,19 +522,19 @@ html[dir='rtl'] #viewerContainer {
   height: 32px;
   background-color: #424242; /* fallback */
   background-image: url(/pdfjs/web/images/texture.png),
-                    linear-gradient(hsla(0,0%,30%,.99), hsla(0,0%,25%,.95));
+  linear-gradient(hsla(0,0%,30%,.99), hsla(0,0%,25%,.95));
 }
 html[dir='ltr'] #toolbarSidebar {
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25),
-              inset 0 -1px 0 hsla(0,0%,100%,.05),
-              0 1px 0 hsla(0,0%,0%,.15),
-              0 0 1px hsla(0,0%,0%,.1);
+  inset 0 -1px 0 hsla(0,0%,100%,.05),
+  0 1px 0 hsla(0,0%,0%,.15),
+  0 0 1px hsla(0,0%,0%,.1);
 }
 html[dir='rtl'] #toolbarSidebar {
   box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.25),
-              inset 0 1px 0 hsla(0,0%,100%,.05),
-              0 1px 0 hsla(0,0%,0%,.15),
-              0 0 1px hsla(0,0%,0%,.1);
+  inset 0 1px 0 hsla(0,0%,100%,.05),
+  0 1px 0 hsla(0,0%,0%,.15),
+  0 0 1px hsla(0,0%,0%,.1);
 }
 
 #toolbarContainer, .findbar, .secondaryToolbar {
@@ -537,21 +542,21 @@ html[dir='rtl'] #toolbarSidebar {
   height: 32px;
   background-color: #474747; /* fallback */
   background-image: url(/pdfjs/web/images/texture.png),
-                    linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
+  linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
 }
 html[dir='ltr'] #toolbarContainer, .findbar, .secondaryToolbar {
   box-shadow: inset 1px 0 0 hsla(0,0%,100%,.08),
-              inset 0 1px 1px hsla(0,0%,0%,.15),
-              inset 0 -1px 0 hsla(0,0%,100%,.05),
-              0 1px 0 hsla(0,0%,0%,.15),
-              0 1px 1px hsla(0,0%,0%,.1);
+  inset 0 1px 1px hsla(0,0%,0%,.15),
+  inset 0 -1px 0 hsla(0,0%,100%,.05),
+  0 1px 0 hsla(0,0%,0%,.15),
+  0 1px 1px hsla(0,0%,0%,.1);
 }
 html[dir='rtl'] #toolbarContainer, .findbar, .secondaryToolbar {
   box-shadow: inset -1px 0 0 hsla(0,0%,100%,.08),
-              inset 0 1px 1px hsla(0,0%,0%,.15),
-              inset 0 -1px 0 hsla(0,0%,100%,.05),
-              0 1px 0 hsla(0,0%,0%,.15),
-              0 1px 1px hsla(0,0%,0%,.1);
+  inset 0 1px 1px hsla(0,0%,0%,.15),
+  inset 0 -1px 0 hsla(0,0%,100%,.05),
+  0 1px 0 hsla(0,0%,0%,.15),
+  0 1px 1px hsla(0,0%,0%,.1);
 }
 
 #toolbarViewer {
@@ -602,9 +607,9 @@ html[dir='rtl'] #toolbarContainer, .findbar, .secondaryToolbar {
   width: calc(100% + 150px);
 
   background: repeating-linear-gradient(135deg,
-                                        #bbb 0, #999 5px,
-                                        #999 45px, #ddd 55px,
-                                        #ddd 95px, #bbb 100px);
+  #bbb 0, #999 5px,
+  #999 45px, #ddd 55px,
+  #ddd 95px, #bbb 100px);
 
   -webkit-animation: progressIndeterminate 950ms linear infinite;
   animation: progressIndeterminate 950ms linear infinite;
@@ -614,8 +619,7 @@ html[dir='rtl'] #toolbarContainer, .findbar, .secondaryToolbar {
   top: 32px;
   position: absolute;
   z-index: 10000;
-  height: 32px;
-
+  height: auto;
   min-width: 16px;
   padding: 0px 6px 0px 6px;
   margin: 4px 2px 4px 2px;
@@ -626,10 +630,21 @@ html[dir='rtl'] #toolbarContainer, .findbar, .secondaryToolbar {
   cursor: default;
 }
 
+.findbar {
+  min-width: 300px;
+}
+.findbar > div {
+  height: 32px;
+}
+.findbar.wrapContainers > div {
+  clear: both;
+}
+.findbar.wrapContainers > div#findbarMessageContainer {
+  height: auto;
+}
 html[dir='ltr'] .findbar {
   left: 68px;
 }
-
 html[dir='rtl'] .findbar {
   right: 68px;
 }
@@ -639,6 +654,21 @@ html[dir='rtl'] .findbar {
   -moz-user-select: none;
 }
 
+#findInput {
+  width: 200px;
+}
+#findInput::-webkit-input-placeholder {
+  font-style: italic;
+}
+#findInput::-moz-placeholder {
+  font-style: italic;
+}
+#findInput:-ms-input-placeholder {
+  font-style: italic;
+}
+#findInput::placeholder {
+  font-style: italic;
+}
 #findInput[data-status="pending"] {
   background-image: url(/pdfjs/web/images/loading-small.png);
   background-repeat: no-repeat;
@@ -730,6 +760,9 @@ html[dir='ltr'] .doorHangerRight:before {
   font-style: italic;
   color: #A6B7D0;
 }
+#findMsg:empty {
+  display: none;
+}
 
 #findInput.notFound {
   background-color: rgb(255, 102, 102);
@@ -752,14 +785,14 @@ html[dir='rtl'] #toolbarViewerLeft {
 html[dir='ltr'] #toolbarViewerLeft > *,
 html[dir='ltr'] #toolbarViewerMiddle > *,
 html[dir='ltr'] #toolbarViewerRight > *,
-html[dir='ltr'] .findbar > * {
+html[dir='ltr'] .findbar * {
   position: relative;
   float: left;
 }
 html[dir='rtl'] #toolbarViewerLeft > *,
 html[dir='rtl'] #toolbarViewerMiddle > *,
 html[dir='rtl'] #toolbarViewerRight > *,
-html[dir='rtl'] .findbar > * {
+html[dir='rtl'] .findbar * {
   position: relative;
   float: right;
 }
@@ -803,10 +836,6 @@ html[dir='rtl'] .splitToolbarButton > .toolbarButton {
   opacity: .5;
 }
 
-.toolbarButton.group {
-  margin-right: 0;
-}
-
 .splitToolbarButton.toggled .toolbarButton {
   margin: 0;
 }
@@ -821,8 +850,8 @@ html[dir='rtl'] .splitToolbarButton > .toolbarButton {
   border: 1px solid hsla(0,0%,0%,.35);
   border-color: hsla(0,0%,0%,.32) hsla(0,0%,0%,.38) hsla(0,0%,0%,.42);
   box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
-              0 0 1px hsla(0,0%,100%,.15) inset,
-              0 1px 0 hsla(0,0%,100%,.05);
+  0 0 1px hsla(0,0%,100%,.15) inset,
+  0 1px 0 hsla(0,0%,100%,.05);
   -webkit-transition-property: background-color, border-color, box-shadow;
   -webkit-transition-duration: 150ms;
   -webkit-transition-timing-function: ease;
@@ -840,8 +869,8 @@ html[dir='rtl'] .splitToolbarButton > .toolbarButton {
 .toolbarButton.textButton:focus {
   background-color: hsla(0,0%,0%,.2);
   box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
-              0 0 1px hsla(0,0%,100%,.15) inset,
-              0 0 1px hsla(0,0%,0%,.05);
+  0 0 1px hsla(0,0%,100%,.15) inset,
+  0 0 1px hsla(0,0%,0%,.05);
   z-index: 199;
 }
 .splitToolbarButton > .toolbarButton {
@@ -940,8 +969,8 @@ html[dir='rtl'] .dropdownToolbarButton {
   border: 1px solid hsla(0,0%,0%,.35);
   border-color: hsla(0,0%,0%,.32) hsla(0,0%,0%,.38) hsla(0,0%,0%,.42);
   box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
-              0 0 1px hsla(0,0%,100%,.15) inset,
-              0 1px 0 hsla(0,0%,100%,.05);
+  0 0 1px hsla(0,0%,100%,.15) inset,
+  0 1px 0 hsla(0,0%,100%,.05);
 }
 
 .toolbarButton:hover:active,
@@ -952,8 +981,8 @@ html[dir='rtl'] .dropdownToolbarButton {
   background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
   border-color: hsla(0,0%,0%,.35) hsla(0,0%,0%,.4) hsla(0,0%,0%,.45);
   box-shadow: 0 1px 1px hsla(0,0%,0%,.1) inset,
-              0 0 1px hsla(0,0%,0%,.2) inset,
-              0 1px 0 hsla(0,0%,100%,.05);
+  0 0 1px hsla(0,0%,0%,.2) inset,
+  0 1px 0 hsla(0,0%,100%,.05);
   -webkit-transition-property: background-color, border-color, box-shadow;
   -webkit-transition-duration: 10ms;
   -webkit-transition-timing-function: linear;
@@ -969,8 +998,8 @@ html[dir='rtl'] .dropdownToolbarButton {
   background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
   border-color: hsla(0,0%,0%,.4) hsla(0,0%,0%,.45) hsla(0,0%,0%,.5);
   box-shadow: 0 1px 1px hsla(0,0%,0%,.1) inset,
-              0 0 1px hsla(0,0%,0%,.2) inset,
-              0 1px 0 hsla(0,0%,100%,.05);
+  0 0 1px hsla(0,0%,0%,.2) inset,
+  0 1px 0 hsla(0,0%,100%,.05);
   -webkit-transition-property: background-color, border-color, box-shadow;
   -webkit-transition-duration: 10ms;
   -webkit-transition-timing-function: linear;
@@ -985,8 +1014,8 @@ html[dir='rtl'] .dropdownToolbarButton {
   background-color: hsla(0,0%,0%,.4);
   border-color: hsla(0,0%,0%,.4) hsla(0,0%,0%,.5) hsla(0,0%,0%,.55);
   box-shadow: 0 1px 1px hsla(0,0%,0%,.2) inset,
-              0 0 1px hsla(0,0%,0%,.3) inset,
-              0 1px 0 hsla(0,0%,100%,.05);
+  0 0 1px hsla(0,0%,0%,.3) inset,
+  0 1px 0 hsla(0,0%,100%,.05);
 }
 
 .dropdownToolbarButton {
@@ -1187,6 +1216,24 @@ html[dir="rtl"] #viewOutline.toolbarButton::before {
   content: url(/pdfjs/web/images/toolbarButton-search.png);
 }
 
+.toolbarButton.pdfSidebarNotification::after {
+  position: absolute;
+  display: inline-block;
+  top: 1px;
+  /* Create a filled circle, with a diameter of 9 pixels, using only CSS: */
+  content: '';
+  background-color: #70DB55;
+  height: 9px;
+  width: 9px;
+  border-radius: 50%;
+}
+html[dir='ltr'] .toolbarButton.pdfSidebarNotification::after {
+  left: 17px;
+}
+html[dir='rtl'] .toolbarButton.pdfSidebarNotification::after {
+  right: 17px;
+}
+
 .secondaryToolbarButton {
   position: relative;
   margin: 0 0 4px 0;
@@ -1235,6 +1282,10 @@ html[dir="rtl"] .secondaryToolbarButton > span {
   content: url(/pdfjs/web/images/secondaryToolbarButton-rotateCw.png);
 }
 
+.secondaryToolbarButton.selectTool::before {
+  content: url(/pdfjs/web/images/secondaryToolbarButton-selectTool.png);
+}
+
 .secondaryToolbarButton.handTool::before {
   content: url(/pdfjs/web/images/secondaryToolbarButton-handTool.png);
 }
@@ -1278,7 +1329,7 @@ html[dir='rtl'] .verticalToolbarSeparator {
   border: 1px solid hsla(0,0%,0%,.35);
   border-color: hsla(0,0%,0%,.32) hsla(0,0%,0%,.38) hsla(0,0%,0%,.42);
   box-shadow: 0 1px 0 hsla(0,0%,0%,.05) inset,
-              0 1px 0 hsla(0,0%,100%,.05);
+  0 1px 0 hsla(0,0%,100%,.05);
   color: hsl(0,0%,95%);
   font-size: 12px;
   line-height: 14px;
@@ -1308,8 +1359,8 @@ html[dir='rtl'] .verticalToolbarSeparator {
 
 .toolbarField.pageNumber::-webkit-inner-spin-button,
 .toolbarField.pageNumber::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .toolbarField:hover {
@@ -1390,8 +1441,8 @@ a:focus > .thumbnail > .thumbnailSelectionRing,
   background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
   background-clip: padding-box;
   box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
-              0 0 1px hsla(0,0%,100%,.2) inset,
-              0 0 1px hsla(0,0%,0%,.2);
+  0 0 1px hsla(0,0%,100%,.2) inset,
+  0 0 1px hsla(0,0%,0%,.2);
   color: hsla(0,0%,100%,.9);
 }
 
@@ -1405,8 +1456,8 @@ a:focus > .thumbnail > .thumbnailSelectionRing,
   background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
   background-clip: padding-box;
   box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
-              0 0 1px hsla(0,0%,100%,.1) inset,
-              0 0 1px hsla(0,0%,0%,.2);
+  0 0 1px hsla(0,0%,100%,.1) inset,
+  0 0 1px hsla(0,0%,0%,.2);
   color: hsla(0,0%,100%,1);
 }
 
@@ -1521,8 +1572,8 @@ html[dir='rtl'] .outlineItemToggler::before {
   background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
   background-clip: padding-box;
   box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
-              0 0 1px hsla(0,0%,100%,.2) inset,
-              0 0 1px hsla(0,0%,0%,.2);
+  0 0 1px hsla(0,0%,100%,.2) inset,
+  0 0 1px hsla(0,0%,0%,.2);
   border-radius: 2px;
   color: hsla(0,0%,100%,.9);
 }
@@ -1532,8 +1583,8 @@ html[dir='rtl'] .outlineItemToggler::before {
   background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
   background-clip: padding-box;
   box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
-              0 0 1px hsla(0,0%,100%,.1) inset,
-              0 0 1px hsla(0,0%,0%,.2);
+  0 0 1px hsla(0,0%,100%,.1) inset,
+  0 0 1px hsla(0,0%,0%,.2);
   color: hsla(0,0%,100%,1);
 }
 
@@ -1614,12 +1665,12 @@ html[dir='rtl'] .outlineItemToggler::before {
   line-height: 14px;
   background-color: #474747; /* fallback */
   background-image: url(/pdfjs/web/images/texture.png),
-                    linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
+  linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
   box-shadow: inset 1px 0 0 hsla(0,0%,100%,.08),
-              inset 0 1px 1px hsla(0,0%,0%,.15),
-              inset 0 -1px 0 hsla(0,0%,100%,.05),
-              0 1px 0 hsla(0,0%,0%,.15),
-              0 1px 1px hsla(0,0%,0%,.1);
+  inset 0 1px 1px hsla(0,0%,0%,.15),
+  inset 0 -1px 0 hsla(0,0%,100%,.05),
+  0 1px 0 hsla(0,0%,0%,.15),
+  0 1px 1px hsla(0,0%,0%,.1);
   border: 1px solid hsla(0,0%,0%,.5);
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
@@ -1712,9 +1763,9 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
   width: 300px;
 }
 #PDFBug .controls {
-    background:#EEEEEE;
-    border-bottom: 1px solid #666666;
-    padding: 3px;
+  background:#EEEEEE;
+  border-bottom: 1px solid #666666;
+  padding: 3px;
 }
 #PDFBug .panels {
   bottom: 0;
@@ -1741,7 +1792,7 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
   white-space: pre;
 }
 #PDFBug .stats .title {
-    font-weight: bold;
+  font-weight: bold;
 }
 #PDFBug table {
   font-size: 10px;
@@ -1960,6 +2011,10 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
     content: url(/pdfjs/web/images/secondaryToolbarButton-rotateCw@2x.png);
   }
 
+  .secondaryToolbarButton.selectTool::before {
+    content: url(/pdfjs/web/images/secondaryToolbarButton-selectTool@2x.png);
+  }
+
   .secondaryToolbarButton.handTool::before {
     content: url(/pdfjs/web/images/secondaryToolbarButton-handTool@2x.png);
   }
@@ -2147,7 +2202,7 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
 }
 
 @media all and (max-width: 640px) {
-  .hiddenSmallView {
+  .hiddenSmallView, .hiddenSmallView * {
     display: none;
   }
   .visibleSmallView {
@@ -2155,6 +2210,12 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
   }
   .toolbarButtonSpacer {
     width: 0;
+  }
+  html[dir='ltr'] .findbar {
+    left: 38px;
+  }
+  html[dir='rtl'] .findbar {
+    right: 38px;
   }
 }
 
