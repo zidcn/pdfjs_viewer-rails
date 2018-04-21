@@ -8977,7 +8977,7 @@
           "showPreviousViewOnLoad": true,
           "defaultZoomValue": "",
           "sidebarViewOnLoad": 0,
-          "enableHandToolOnLoad": false,
+          "enableHandToolOnLoad": true,
           "cursorToolOnLoad": 0,
           "enableWebGL": false,
           "pdfBugEnabled": false,
