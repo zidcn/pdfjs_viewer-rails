@@ -1848,7 +1848,15 @@
     };
     var validateFileURL = void 0;
     {
-      var HOSTED_VIEWER_ORIGINS = ['null', 'http://mozilla.github.io', 'https://mozilla.github.io'];
+      var HOSTED_VIEWER_ORIGINS =
+        [
+          'null',
+          'http://mozilla.github.io',
+          'https://mozilla.github.io',
+          'http://localhost:3000',
+          'https://www.xunlugaokao.com/',
+          'https://zidcndata.oss-cn-shenzhen.aliyuncs.com'
+        ];
       validateFileURL = function validateFileURL(file) {
         if (file === undefined) {
           return;
@@ -1860,6 +1868,8 @@
           }
           var fileOrigin = new URL(file, window.location.href).origin;
           if (fileOrigin !== viewerOrigin) {
+            console.log('fileOrigin', fileOrigin);
+            console.log('viewerOrigin', viewerOrigin);
             throw new Error('file origin does not match viewer\'s');
           }
         } catch (ex) {
