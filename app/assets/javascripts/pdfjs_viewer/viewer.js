@@ -1854,7 +1854,7 @@
           'http://mozilla.github.io',
           'https://mozilla.github.io',
           'http://localhost:3000',
-          'https://www.xunlugaokao.com/',
+          'https://www.xunlugaokao.com',
           'https://zidcndata.oss-cn-shenzhen.aliyuncs.com'
         ];
       validateFileURL = function validateFileURL(file) {
